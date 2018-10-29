@@ -1,52 +1,67 @@
 package br.com.dto;
 
+import javax.xml.crypto.Data;
 import java.io.Serializable;
+import java.util.Date;
 
 public class PedidoDto implements Serializable {
+    private int numero;
+    private double valor;
+    private Date dataPedido;
+    private String nomeCliente;
+    private int estadoDoPedido;
+    private String CPFFuncionario;
 
-    private String codigoProduto;
-    private double precoVenda;
-    private double preco;
-    private String nomeProduto;
-    private int quantidade;
-
-    public String getCodigoProduto() {
-        return codigoProduto;
+    public int getNumero() {
+        return numero;
     }
 
-    public void setCodigoProduto(String codigoProduto) {
-        this.codigoProduto = codigoProduto;
+    public void setNumero(int numero) {
+        this.numero = numero;
     }
 
-    public double getPrecoVenda() {
-        return precoVenda;
+    public double getValor() {
+        return valor;
     }
 
-    public void setPrecoVenda(double precoVenda) {
-        this.precoVenda = precoVenda;
+    public void setValor(double valor) {
+        this.valor = valor;
     }
 
-    public double getPreco() {
-        return preco;
+    public Date getDataPedido() {
+        return dataPedido;
     }
 
-    public void setPreco(double preco) {
-        this.preco = preco;
+    public void setDataPedido(Date dataPedido) {
+        this.dataPedido = dataPedido;
     }
 
-    public String getNomeProduto() {
-        return nomeProduto;
+    public String getNomeCliente() {
+        return nomeCliente;
     }
 
-    public void setNomeProduto(String nomeProduto) {
-        this.nomeProduto = nomeProduto;
+    public void setNomeCliente(String nomeCliente) {
+        this.nomeCliente = nomeCliente;
     }
 
-    public int getQuantidade() {
-        return quantidade;
+    public int getEstadoDoPedido() {
+        return estadoDoPedido;
     }
 
-    public void setQuantidade(int quantidade) {
-        this.quantidade = quantidade;
+    public void setEstadoDoPedido(int estadoDoPedido) {
+        this.estadoDoPedido = estadoDoPedido;
+    }
+
+    public String getCPFFuncionario() {
+        return CPFFuncionario;
+    }
+
+    public void setCPFFuncionario(String CPFFuncionario) {
+        this.CPFFuncionario = CPFFuncionario;
+    }
+
+    @Override
+    public String toString() {
+        return numero+","+valor+","+dataPedido+","+nomeCliente+","+estadoDoPedido+","+CPFFuncionario;
     }
 }

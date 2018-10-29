@@ -40,4 +40,9 @@ public class FornecedorDto implements Serializable {
     public void setCnpj(String cnpj) {
         this.cnpj = cnpj;
     }
+
+    @Override
+    public String toString() {
+        return cnpj+","+contato+","+nome+","+endereco;
+    }
 }

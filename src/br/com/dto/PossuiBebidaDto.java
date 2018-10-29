@@ -22,4 +22,9 @@ public class PossuiBebidaDto implements Serializable {
     public void setCodigoItem(String codigoItem) {
         this.codigoItem = codigoItem;
     }
+
+    @Override
+    public String toString() {
+        return codigoProduto+","+codigoItem;
+    }
 }

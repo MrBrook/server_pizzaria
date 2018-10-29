@@ -48,6 +48,6 @@ public class BebidaDto implements Serializable {
 
     @Override
     public String toString() {
-        return codigo+ " "+ nome+" "+ tipo+ " "+quantidade;
+        return codigo+ ","+ nome+","+ tipo+ ","+quantidade;
     }
 }

@@ -41,4 +41,9 @@ public class ForneceBebidaDto implements Serializable {
     public void setPedido(String pedido) {
         this.pedido = pedido;
     }
+
+    @Override
+    public String toString() {
+        return cnpj+","+codigoItem+","+dataPedido+","+pedido;
+    }
 }

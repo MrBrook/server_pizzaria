@@ -1,20 +1,20 @@
 package br.com.dao;
 
-import br.com.dto.BebidaDto;
+import br.com.dto.IngredienteDto;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-public class BebidaDao extends TabelasDao{
+public class IngredienteDao {
 
-    public ArrayList<String> listaBebida(Connection conexao,String SQL){
+    public ArrayList<String> listaIngredientes(Connection conexao, String SQL){
 
         ArrayList<String> resposta = null;
 
         ResultSet resSet = null;
-        BebidaDto bebida = new BebidaDto();
+        IngredienteDto ingredienteDto = new IngredienteDto();
 
         try{
 
@@ -24,12 +24,11 @@ public class BebidaDao extends TabelasDao{
 
             while (resSet.next()){
 
-                bebida.setCodigo(resSet.getString("codigo"));
-                bebida.setNome(resSet.getString("nome"));
-                bebida.setTipo(resSet.getString("tipo"));
-                bebida.setQuantidade(resSet.getInt("quantidade"));
+                ingredienteDto.setCodigo(resSet.getString("codigo"));
+                ingredienteDto.setNome(resSet.getString("nome"));
+                ingredienteDto.setQuantidade(resSet.getInt("quantidade"));
 
-                resposta.add(bebida.toString());
+                resposta.add(ingredienteDto.toString());
 
             }
 
@@ -39,5 +38,7 @@ public class BebidaDao extends TabelasDao{
 
         return resposta;
     }
-
 }
+
+
+

@@ -14,6 +14,7 @@ public class Tabelas {
 
 
     public Tabelas(){
+
         setTabelasDto();
         setTabelasDao();
 

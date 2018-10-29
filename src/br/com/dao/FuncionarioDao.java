@@ -1,20 +1,21 @@
 package br.com.dao;
 
-import br.com.dto.BebidaDto;
+
+import br.com.dto.FuncionarioDto;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
-public class BebidaDao extends TabelasDao{
+public class FuncionarioDao {
 
-    public ArrayList<String> listaBebida(Connection conexao,String SQL){
+    public ArrayList<String> listaFuncionario(Connection conexao, String SQL){
 
         ArrayList<String> resposta = null;
 
         ResultSet resSet = null;
-        BebidaDto bebida = new BebidaDto();
+        FuncionarioDto funcionarioDto = new FuncionarioDto();
 
         try{
 
@@ -24,12 +25,13 @@ public class BebidaDao extends TabelasDao{
 
             while (resSet.next()){
 
-                bebida.setCodigo(resSet.getString("codigo"));
-                bebida.setNome(resSet.getString("nome"));
-                bebida.setTipo(resSet.getString("tipo"));
-                bebida.setQuantidade(resSet.getInt("quantidade"));
+                funcionarioDto.setCpf(resSet.getString("cpf"));
+                funcionarioDto.setNome(resSet.getNString("nome"));
+                funcionarioDto.setSalario(resSet.getDouble("salario"));
 
-                resposta.add(bebida.toString());
+
+
+                resposta.add(funcionarioDto.toString());
 
             }
 

@@ -31,4 +31,9 @@ public class FuncionarioDto implements Serializable {
     public void setSalario(double salario) {
         this.salario = salario;
     }
+
+    @Override
+    public String toString() {
+        return cpf+","+nome+","+salario;
+    }
 }
