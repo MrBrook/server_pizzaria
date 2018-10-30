@@ -13,7 +13,7 @@ public class PedidoDao {
 
     public ArrayList<String> listaPedidos(Connection conexao, String SQL){
 
-        ArrayList<String> resposta = null;
+        ArrayList<String> resposta = new ArrayList<>();
 
         ResultSet resSet = null;
         PedidoDto pedidoDto = new PedidoDto();

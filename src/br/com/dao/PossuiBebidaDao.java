@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class PossuiBebidaDao {
     public ArrayList<String> listaPossuiBebida(Connection conexao, String SQL){
 
-        ArrayList<String> resposta = null;
+        ArrayList<String> resposta = new ArrayList<>();
 
         ResultSet resSet = null;
         PossuiBebidaDto possuiBebidaDto = new PossuiBebidaDto();

@@ -1,5 +1,8 @@
 package br.com.server;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public interface Configuracao {
 
     //configuraçao do servidor
@@ -11,4 +14,9 @@ public interface Configuracao {
 
     static final String USER = "root";
     static final String PASSWORD = "root";
+
+
+
+
+
 }

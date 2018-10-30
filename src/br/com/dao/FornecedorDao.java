@@ -11,7 +11,7 @@ public class FornecedorDao {
 
     public ArrayList<String> listaFornecedor(Connection conexao, String SQL){
 
-        ArrayList<String> resposta = null;
+        ArrayList<String> resposta = new ArrayList<>();
 
         ResultSet resSet = null;
         FornecedorDto fornecedorDto = new FornecedorDto();
@@ -25,7 +25,7 @@ public class FornecedorDao {
             while (resSet.next()){
 
                 fornecedorDto.setCnpj(resSet.getString("cnpj"));
-                fornecedorDto.setContato(resSet.getNString("contato"));
+                fornecedorDto.setContato(resSet.getString("contato"));
                 fornecedorDto.setNome(resSet.getString("nome"));
                 fornecedorDto.setEndereco(resSet.getString("endereco"));
 

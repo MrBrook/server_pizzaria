@@ -11,7 +11,7 @@ public class ProdutoDao {
 
     public ArrayList<String> listaProduto(Connection conexao, String SQL){
 
-        ArrayList<String> resposta = null;
+        ArrayList<String> resposta = new ArrayList<>();
 
         ResultSet resSet = null;
         ProdutoDto produtoDto = new ProdutoDto();

@@ -11,7 +11,7 @@ public class ForneceBebidaDao {
 
     public ArrayList<String> listaForneceBebida(Connection conexao, String SQL){
 
-        ArrayList<String> resposta = null;
+        ArrayList<String> resposta = new ArrayList<>();
 
         ResultSet resSet = null;
         ForneceBebidaDto forneceBebidaDto = new ForneceBebidaDto();
@@ -25,7 +25,7 @@ public class ForneceBebidaDao {
             while (resSet.next()){
 
                 forneceBebidaDto.setCnpj(resSet.getString("cnpj"));
-                forneceBebidaDto.setCodigoItem(resSet.getNString("codigoItem"));
+                forneceBebidaDto.setCodigoItem(resSet.getString("codigoItem"));
                 forneceBebidaDto.setDataPedido(resSet.getDate("dataPedido"));
                 forneceBebidaDto.setPedido(resSet.getString("pedido"));
 

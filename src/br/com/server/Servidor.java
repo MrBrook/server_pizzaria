@@ -3,6 +3,7 @@ package br.com.server;
 import br.com.banco.Tabelas;
 import br.com.dao.*;
 
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
@@ -13,130 +14,148 @@ import java.util.ArrayList;
 
 import static br.com.banco.Conexao.getConnection;
 
-public class Servidor implements Configuracao{
+public class Servidor implements Runnable {
 
-    private ServerSocket socketServidor;
-    static public Tabelas tabelas;
+    private Socket cliente;
+    static private Tabelas tabelas;
 
     private boolean flag = true;
 
+    private Servidor(Socket cliente) {
 
-    public Servidor() {
+        this.cliente = cliente;
         tabelas = new Tabelas();
-        inicializaConexao();
+
     }
 
-    public void inicializaConexao() {
-        try {
-            socketServidor = new ServerSocket(PORT_SERVER);
-            while(true) {
-                Socket socket = socketServidor.accept();
-                System.out.println("aceito: "+socketServidor.getInetAddress());
-                Thread t = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
+    private ArrayList<String> processaComandoSelect(Connection conexao, String comando) throws SQLException {
 
-                            ObjectInputStream fEntrada = new ObjectInputStream(socket.getInputStream());
-                            ObjectOutputStream fSaida = new ObjectOutputStream(socket.getOutputStream());
+        String nomeTabela = (comando.split(" "))[3];
 
-                            if(flag){ //senhas
-                                System.out.println(fEntrada.readObject());
-                                System.out.println(fEntrada.readObject());
-                                flag = false;
-                            }
+        Object tabela = tabelas.getTabela(1,nomeTabela );
 
-                            while (fEntrada.available()==0){
-
-                                ArrayList<String> resposta = null;
-
-                                Connection con = null;
-                                try {
-
-                                    con = getConnection();
-
-                                    resposta = processaComando(con,(String) fEntrada.readObject());
-
-                                    fSaida.writeObject(resposta);
-                                    fSaida.flush();
-
-                                    con.close();
-
-                                } catch (Exception e) {
-                                    System.out.println(e);
-                                } finally {
-                                    con.close();
-                                }
-                            }
-
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-                t.run();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-
-    public  ArrayList<String> processaComando(Connection conexao,String comando) throws SQLException {
-
-        Object tabela = null;
-        String[] comandos = comando.split(" ");
-
-        if (comando.contains("select")) {
-
-            tabela = tabelas.getTabela(1, comandos[3]);
-
-            switch (comandos[3]) {
-                case "bebida":
-                    return ((BebidaDao)tabela).listaBebida(conexao,comando);
-                case "contem":
-                    return ((ContemDao)tabela).listaContem(conexao,comando);
-                case "fornecebebida":
-                    return ((ForneceBebidaDao)tabela).listaForneceBebida(conexao,comando);
-                case "fornecedor":
-                    return ((FornecedorDao)tabela).listaFornecedor(conexao,comando);
-                case "forneceingrediente":
-                    return ((ForneceIngredienteDao)tabela).listaForneceIngrediente(conexao,comando);
-                case "funcionario":
-                    return ((FuncionarioDao)tabela).listaFuncionario(conexao,comando);
-                case "ingrediente":
-                    return ((IngredienteDao)tabela).listaIngredientes(conexao,comando);
-                case "pedido":
-                    return ((PedidoDao)tabela).listaPedidos(conexao,comando);
-                case "possuibebida":
-                    return ((PossuiBebidaDao)tabela).listaPossuiBebida(conexao,comando);
-                case "possuiingrediente":
-                    return ((PossuiIngredienteDao)tabela).listaPossuiIngrediente(conexao,comando);
-                case "produto":
-                    return ((ProdutoDao)tabela).listaProduto(conexao,comando);
-            }
-
-        }else{
-            TabelasDao tabelas = new TabelasDao();
-
-            if (tabelas.executaOperacao(conexao,comando)) return null ;
-
-//            if (comando.contains("delete")) {
-//
-//
-//            } else if (comando.contains("update")) {
-//
-//            } else if (comando.contains("insert")) {
-//
-//            }
+        switch (nomeTabela) {
+            case "bebida":
+                return ((BebidaDao)tabela).listaBebida(conexao,comando);
+            case "contem":
+                return ((ContemDao)tabela).listaContem(conexao,comando);
+            case "fornecebebida":
+                return ((ForneceBebidaDao)tabela).listaForneceBebida(conexao,comando);
+            case "fornecedor":
+                return ((FornecedorDao)tabela).listaFornecedor(conexao,comando);
+            case "forneceingrediente":
+                return ((ForneceIngredienteDao)tabela).listaForneceIngrediente(conexao,comando);
+            case "funcionario":
+                return ((FuncionarioDao)tabela).listaFuncionario(conexao,comando);
+            case "ingrediente":
+                return ((IngredienteDao)tabela).listaIngredientes(conexao,comando);
+            case "pedido":
+                return ((PedidoDao)tabela).listaPedidos(conexao,comando);
+            case "possuibebida":
+                return ((PossuiBebidaDao)tabela).listaPossuiBebida(conexao,comando);
+            case "possuiingrediente":
+                return ((PossuiIngredienteDao)tabela).listaPossuiIngrediente(conexao,comando);
+            case "produto":
+                return ((ProdutoDao)tabela).listaProduto(conexao,comando);
         }
 
         return null;
     }
 
-    public static void main(String args[]) {
+    private String processaComando(Connection conexao,String comando) throws SQLException {
 
-       new Servidor();
+        TabelasDao tabelas = new TabelasDao();
 
+        if (tabelas.executaOperacao(conexao,comando)) return "OK";
+        else return "ERRO";
+
+
+    }
+
+    @Override
+    public void run() {
+
+        try {
+
+            ObjectOutputStream fSaida = new ObjectOutputStream(cliente.getOutputStream());
+            ObjectInputStream fEntrada = new ObjectInputStream(cliente.getInputStream());
+
+            if (flag) { //senhas
+                String user = (String) fEntrada.readObject();
+                String password = (String) fEntrada.readObject();
+
+                flag = false;
+
+                if (user.equals(Configuracao.USER) && password.equals(Configuracao.PASSWORD)) {
+                    fSaida.writeUTF("bom dia denis");
+                    fSaida.flush();
+                } else {
+                    fSaida.writeUTF("conexão recusada");
+                    fSaida.flush();
+                    cliente.close();
+                }
+            }
+            while (true){
+
+                try {
+
+                    ArrayList<String> resposta = new ArrayList<>();
+                    String res;
+
+                    String comando = (String) fEntrada.readObject();
+
+                    Connection conexao  = getConnection();
+
+                    if(comando.equals(null)) {
+                        conexao .close();
+                        break;
+                    }
+                    else {
+
+
+                        if((comando.split(" "))[0].equals("select")){
+                            resposta = processaComandoSelect(conexao , comando);
+                            if(resposta.equals(null)){
+                                System.out.println("ERRO");
+                            }else {
+                                fSaida.writeObject(resposta);
+                                System.out.println(comando+" -> OK");
+
+                                resposta.clear();
+                            }
+
+                        } else{
+
+                            res = processaComando(conexao ,comando);
+                            fSaida.writeUTF(res);
+                            System.out.println("RESPOSTA -> "+res);
+
+                        }
+                        fSaida.flush();
+                        conexao.close();
+                    }
+
+                } catch (Exception e) {
+                    getConnection().close();
+                    break;
+                }
+            }
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void main(String args[]) throws IOException {
+
+        ServerSocket servidor = new ServerSocket(Configuracao.PORT_SERVER);
+
+        while (true){
+
+            Socket cliente = servidor.accept();
+            System.out.println("Conectado");
+            new Thread(new Servidor(cliente)).start();
+
+        }
     }
 }

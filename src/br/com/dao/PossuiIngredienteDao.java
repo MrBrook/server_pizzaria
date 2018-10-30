@@ -11,7 +11,7 @@ public class PossuiIngredienteDao {
 
     public ArrayList<String> listaPossuiIngrediente(Connection conexao, String SQL){
 
-        ArrayList<String> resposta = null;
+        ArrayList<String> resposta = new ArrayList<>();
 
         ResultSet resSet = null;
         PossuiIngredienteDto possuiIngredienteDto = new PossuiIngredienteDto();

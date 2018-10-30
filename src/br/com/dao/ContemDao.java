@@ -12,7 +12,7 @@ public class ContemDao implements Serializable {
 
     public ArrayList<String> listaContem(Connection conexao,String SQL){
 
-        ArrayList<String> resposta = null;
+        ArrayList<String> resposta = new ArrayList<>();
 
         ResultSet resSet = null;
         ContemDto contemDto = new ContemDto();

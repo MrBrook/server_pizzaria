@@ -12,7 +12,7 @@ public class FuncionarioDao {
 
     public ArrayList<String> listaFuncionario(Connection conexao, String SQL){
 
-        ArrayList<String> resposta = null;
+        ArrayList<String> resposta = new ArrayList<>();
 
         ResultSet resSet = null;
         FuncionarioDto funcionarioDto = new FuncionarioDto();
@@ -26,7 +26,7 @@ public class FuncionarioDao {
             while (resSet.next()){
 
                 funcionarioDto.setCpf(resSet.getString("cpf"));
-                funcionarioDto.setNome(resSet.getNString("nome"));
+                funcionarioDto.setNome(resSet.getString("nome"));
                 funcionarioDto.setSalario(resSet.getDouble("salario"));
 
 

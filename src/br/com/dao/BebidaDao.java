@@ -11,7 +11,7 @@ public class BebidaDao extends TabelasDao{
 
     public ArrayList<String> listaBebida(Connection conexao,String SQL){
 
-        ArrayList<String> resposta = null;
+        ArrayList<String> resposta = new ArrayList<>();
 
         ResultSet resSet = null;
         BebidaDto bebida = new BebidaDto();

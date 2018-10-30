@@ -15,7 +15,7 @@ public class Tabelas {
 
     public Tabelas(){
 
-        setTabelasDto();
+       // setTabelasDto();
         setTabelasDao();
 
     }
@@ -37,15 +37,16 @@ public class Tabelas {
     public void setTabelasDao(){
 
         tabelasDao.put("bebida",new BebidaDao());
-        tabelasDao.put("comtem",new ContemDao());
-//        tabelasDao.put("fornecebebida",new ForneceBebidaDto());
-//        tabelasDao.put("fornecedor",new FornecedorDto());
-//        tabelasDao.put("funcionario",new FuncionarioDto());
-//        tabelasDao.put("ingrediente",new IngredienteDto());
-//        tabelasDao.put("pedido",new PedidoDto());
-//        tabelasDao.put("possuibebida",new PossuiBebidaDto());
-//        tabelasDao.put("possuiingrediente",new PossuiIngredienteDto());
-//        tabelasDao.put("produto",new ProdutoDto());
+        tabelasDao.put("contem",new ContemDao());
+        tabelasDao.put("fornecebebida",new ForneceBebidaDao());
+        tabelasDao.put("forneceingrediente",new ForneceIngredienteDao());
+        tabelasDao.put("fornecedor",new FornecedorDao());
+        tabelasDao.put("funcionario",new FuncionarioDao());
+        tabelasDao.put("ingrediente",new IngredienteDao());
+        tabelasDao.put("pedido",new PedidoDao());
+        tabelasDao.put("possuibebida",new PossuiBebidaDao());
+        tabelasDao.put("possuiingrediente",new PossuiIngredienteDao());
+        tabelasDao.put("produto",new ProdutoDao());
 
     }
 
